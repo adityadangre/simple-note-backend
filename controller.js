@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const response = require('./response');
 const connection = require('./connect');
@@ -20,7 +20,8 @@ exports.note = function (req, res) {
     let id = req.params.id;
 
     connection.query(
-        `SELECT * FROM note WHERE id=${id}`,
+        `SELECT * FROM note WHERE id=?`,
+        [id],
         function (error, rows, field){
             if(error){
                 throw error;
@@ -35,7 +36,8 @@ exports.category = function (req, res) {
     let id = req.params.id;
 
     connection.query(
-        `SELECT * FROM category WHERE id=${id}`,
+        `SELECT * FROM category WHERE id=?`,
+        [id],
         function (error, rows, field){
             if(error){
                 throw error;
@@ -46,7 +48,7 @@ exports.category = function (req, res) {
     );
 };
 
-exports.icategory = function (req, res) {
+exports.addCategory = function (req, res) {
     let name = req.body.name;
 
     connection.query(
@@ -66,7 +68,7 @@ exports.icategory = function (req, res) {
     );
 };
 
-exports.inote = function (req, res) {
+exports.addNote = function (req, res) {
     let title = req.body.title;
     let note = req.body.note;
     let categoryId = req.body.category_id;
@@ -82,6 +84,50 @@ exports.inote = function (req, res) {
                     error: false,
                     data: rows,
                     field: 'data has ben created'
+                });
+            }
+        }
+    );
+};
+
+exports.editCategory = function (req, res){
+    let id = req.params.id;
+    let name = req.body.name;
+
+    connection.query(
+        `UPDATE category SET name=? WHERE id=?`,
+        [name, id],
+        function (error, rows, field){
+            if(error){
+                throw error;
+            }else{
+                return res.send({
+                    error: false,
+                    data: rows,
+                    field: 'data has been changed'
+                });
+            }
+        }
+    );
+};
+
+exports.editNote = function (req, res){
+    let id = req.params.id;
+    let title = req.body.title;
+    let note = req.body.note;
+    let categoryId = req.body.category_id;
+
+    connection.query(
+        `UPDATE note SET title=?, note=?, category_id=? WHERE id=?`,
+        [title, note, categoryId, id],
+        function (error, rows, field){
+            if(error){
+                throw error;
+            }else{
+                return res.send({
+                    error: false,
+                    data: rows,
+                    field: 'data has been changed'
                 });
             }
         }
