@@ -133,3 +133,43 @@ exports.editNote = function (req, res){
         }
     );
 };
+
+exports.deleteNote = function (req, res){
+    let id = req.params.id;
+
+    connection.query(
+        `DELETE FROM note WHERE id=?`,
+        [id],
+        function (error, rows, field){
+            if(error){
+                throw error;
+            }else{
+                return res.send({
+                    error: false,
+                    data: rows,
+                    field: 'data has been deleted'
+                });
+            }
+        }
+    );
+};
+
+exports.deleteCategory = function (req, res){
+    let id = req.params.id;
+
+    connection.query(
+        'DELETE FROM category WHERE id=?',
+        [id],
+        function (error, rows, field){
+            if(error){
+                throw error;
+            }else{
+                return res.send({
+                    error: false,
+                    data: rows,
+                    field: 'data has been deleted'
+                });
+            }
+        }
+    );
+};

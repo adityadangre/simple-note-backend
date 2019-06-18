@@ -9,14 +9,14 @@ module.exports = function (app) {
     app.get('/category/:id', controller.category);
 
     // ========== POST ==========
-    app.post('/category/add', controller.addCategory);
-    app.post('/note/add', controller.addNote);
+    app.post('/category', controller.addCategory);
+    app.post('/note', controller.addNote);
 
     // ========== PATCH ==========
-    app.patch('/category/edit/:id', controller.editCategory);
-    app.patch('/note/edit/:id', controller.editNote);
+    app.patch('/category/:id', controller.editCategory);
+    app.patch('/note/:id', controller.editNote);
 
     // ========== DELETE ==========
-    // app.delete('/note/:id', controller.dnote);
-    // app.delete('/category/:id', controller.dcategory);
+    app.delete('/note/:id', controller.deleteNote);
+    app.delete('/category/:id', controller.deleteCategory);
 }
