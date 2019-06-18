@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const bodyParser = require('body-parser');
 const route = require('./route');
 
@@ -15,4 +17,4 @@ app.use(bodyParser.json());
 route(app);
 
 app.listen(port);
-console.log('http://localhost:' + port);
+console.log('server started on http://localhost:' + port);
