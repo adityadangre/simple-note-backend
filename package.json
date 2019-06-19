@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fdlnfjrrmdni/noteapp.git"
+    "url": "git+https://github.com/fdlnfjrrmdni/simple-note.git"
   },
   "author": "fdlnfjrrmdni",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fdlnfjrrmdni/noteapp/issues"
+    "url": "https://github.com/fdlnfjrrmdni/simple-app/issues"
   },
-  "homepage": "https://github.com/fdlnfjrrmdni/noteapp#readme",
+  "homepage": "https://github.com/fdlnfjrrmdni/simple-app#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^8.0.0",

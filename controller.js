@@ -2,6 +2,8 @@
 
 const response = require('./response');
 const connection = require('./connect');
+const now = new Date();
+const date = now.getDate() + "/" + now.getMonth() + "/" + now.getFullYear();
 
 exports.welcome = function (req, res) {
     connection.query(
@@ -61,7 +63,7 @@ exports.addCategory = function (req, res) {
                 return res.send({
                     error: false,
                     data: rows,
-                    field: 'data has ben created'
+                    field: 'category has ben created'
                 });
             }
         }
@@ -74,7 +76,7 @@ exports.addNote = function (req, res) {
     let categoryId = req.body.category_id;
     
     connection.query(
-        `INSERT INTO note SET title=?, note=?, category_id=?`,
+        `INSERT INTO note SET title=?, note=?, time="${date}", category_id=?`,
         [title, note, categoryId],
         function (error,  rows, field){
             if(error){
@@ -83,7 +85,7 @@ exports.addNote = function (req, res) {
                 return res.send({
                     error: false,
                     data: rows,
-                    field: 'data has ben created'
+                    field: 'note has ben created'
                 });
             }
         }
@@ -118,7 +120,7 @@ exports.editNote = function (req, res){
     let categoryId = req.body.category_id;
 
     connection.query(
-        `UPDATE note SET title=?, note=?, category_id=? WHERE id=?`,
+        `UPDATE note SET title=?, note=?, time="${date}", category_id=? WHERE id=?`,
         [title, note, categoryId, id],
         function (error, rows, field){
             if(error){
