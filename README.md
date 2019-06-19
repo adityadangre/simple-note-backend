@@ -11,14 +11,14 @@ Use NodeJS and Express
 
 ### How to Run :
 
-1. install npm
-2. install nodejs
-3. pull my project to your directory
-4. set configuration database and port in server.js and connect.js
+**1.** install npm\
+**2.** install nodejs\
+**3.** pull my project to your directory\
+**4.** set configuration database and port in server.js and connect.js\
 
 ```sh
 $ npm install --save express mysql body-parser nodemon dotenv
 $ npm start
 ```
 
-note: this project was made to fulfill the task week of the Arkademy
+*note: this project was made to fulfill the task week of the Arkademy*

@@ -18,6 +18,44 @@ exports.welcome = function (req, res) {
     );
 };
 
+exports.notes = function (req, res){
+    let order = req.query.order;
+    let search = req.query.search;
+    var query = `SELECT * FROM note`;
+
+    // if(order != ''){
+    //     query = `SELECT * FROM note ORDER BY ${order}`;
+    // }else if(search != ''){
+    //     query = `SELECT * FROM note WHERE title LIKE '%${search}%'`;
+    // }else{
+    //     query = `SELECT * FROM note`;
+    // }
+    
+    connection.query(
+        query,
+        function (error, rows, field) {
+            if (error) {
+                throw error;
+            } else {
+                response.ok(rows, res);
+            }
+        }
+    );
+}
+
+exports.categories = function (req, res) {
+    connection.query(
+        `SELECT * FROM category`,
+        function (error, rows, field) {
+            if (error) {
+                throw error;
+            } else {
+                response.ok(rows, res);
+            }
+        }
+    );
+}
+
 exports.note = function (req, res) {
     let id = req.params.id;
 
