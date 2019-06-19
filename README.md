@@ -14,7 +14,7 @@ Use NodeJS and Express
 **1.** install npm\
 **2.** install nodejs\
 **3.** pull my project to your directory\
-**4.** create the database, import noteapp.sql
+**4.** create the database, import noteapp.sql\
 **5.** set configuration database and port in server.js and connect.js\
 
 ```sh
