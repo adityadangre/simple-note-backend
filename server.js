@@ -19,7 +19,6 @@ const whitelist = [undefined];
 
 const corsOption = {
     origin: function (origin, callback){
-        console.log(origin)
         if(whitelist.indexOf(origin) !== -1){
             callback(null, true);
         }else{

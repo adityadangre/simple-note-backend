@@ -19,18 +19,16 @@ exports.welcome = function (req, res) {
 };
 
 exports.notes = function (req, res){
-    let order = req.query.order;
+    let sort = req.query.sort;
     let search = req.query.search;
-    var query = `SELECT * FROM note`;
+    let query = '';
+    let sqlSort = `SELECT * FROM note ORDER BY id ${sort}`;
+    let sqlSearch = `SELECT * FROM note WHERE title LIKE '%${search}%'`;
 
-    // if(order != ''){
-    //     query = `SELECT * FROM note ORDER BY ${order}`;
-    // }else if(search != ''){
-    //     query = `SELECT * FROM note WHERE title LIKE '%${search}%'`;
-    // }else{
-    //     query = `SELECT * FROM note`;
-    // }
-    
+    if (sort) { query = sqlSort; }
+    if (search) { query = sqlSearch; }
+    if (!search && !sort) { query = `SELECT * FROM note`; }
+
     connection.query(
         query,
         function (error, rows, field) {
