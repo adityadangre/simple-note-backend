@@ -1,4 +1,4 @@
-# Simpe Note App
+# Simple RESTful Note App
 Use NodeJS and Express
 
 - body-parser : v1.19.0
@@ -15,7 +15,8 @@ Use NodeJS and Express
 **2.** install nodejs\
 **3.** pull my project to your directory\
 **4.** create the database, import noteapp.sql\
-**5.** set configuration database and port in server.js and connect.js
+**5.** create file '.env' fill this with database and port configuration
+**6.** set configuration database and port in server.js and connect.js
 
 ```sh
 $ npm install --save express mysql body-parser nodemon dotenv

@@ -5,9 +5,9 @@ const connection = require('./connect');
 const now = new Date();
 const date = now.getDate() + "/" + now.getMonth() + "/" + now.getFullYear();
 
-exports.welcome = function (req, res) {
+exports.showAll = function (req, res) {
     connection.query(
-        `SELECT * FROM note, category`,
+        `SELECT * FROM notes, categories`,
         function (error, rows, field){
             if(error){
                 throw error;
@@ -18,16 +18,19 @@ exports.welcome = function (req, res) {
     );
 };
 
-exports.notes = function (req, res){
+exports.showNotes = function (req, res){
     let sort = req.query.sort;
     let search = req.query.search;
-    let query = '';
-    let sqlSort = `SELECT * FROM note ORDER BY id ${sort}`;
-    let sqlSearch = `SELECT * FROM note WHERE title LIKE '%${search}%'`;
+    let page = req.query.page;
 
-    if (sort) { query = sqlSort; }
-    if (search) { query = sqlSearch; }
-    if (!search && !sort) { query = `SELECT * FROM note`; }
+    var query = `SELECT * FROM notes `;
+
+    if(search) query = query + `WHERE CONCAT(title,note) LIKE '%${search}%' OR CONCAT(note, title) LIKE '%${search}%' `;
+
+    if(sort) query = query + `ORDER BY id ${sort} `;
+
+    let num = page == 1 ? page-1 : (page-1)*10;
+    if(page) query = query + `LIMIT ${num},10 `;
 
     connection.query(
         query,
@@ -41,9 +44,9 @@ exports.notes = function (req, res){
     );
 }
 
-exports.categories = function (req, res) {
+exports.showCategories = function (req, res) {
     connection.query(
-        `SELECT * FROM category`,
+        `SELECT * FROM categories`,
         function (error, rows, field) {
             if (error) {
                 throw error;
@@ -54,11 +57,11 @@ exports.categories = function (req, res) {
     );
 }
 
-exports.note = function (req, res) {
+exports.showNote = function (req, res) {
     let id = req.params.id;
 
     connection.query(
-        `SELECT * FROM note WHERE id=?`,
+        `SELECT * FROM notes WHERE id=?`,
         [id],
         function (error, rows, field){
             if(error){
@@ -70,11 +73,11 @@ exports.note = function (req, res) {
     );
 };
 
-exports.category = function (req, res) {
+exports.showCategory = function (req, res) {
     let id = req.params.id;
 
     connection.query(
-        `SELECT * FROM category WHERE id=?`,
+        `SELECT * FROM categories WHERE id=?`,
         [id],
         function (error, rows, field){
             if(error){
@@ -90,7 +93,7 @@ exports.addCategory = function (req, res) {
     let name = req.body.name;
 
     connection.query(
-        `INSERT INTO category SET name=?`,
+        `INSERT INTO categories SET name=?`,
         [name],
         function (error, rows, field){
             if(error){
@@ -112,7 +115,7 @@ exports.addNote = function (req, res) {
     let categoryId = req.body.category_id;
     
     connection.query(
-        `INSERT INTO note SET title=?, note=?, time="${date}", category_id=?`,
+        `INSERT INTO notes SET title=?, note=?, time="${date}", category_id=?`,
         [title, note, categoryId],
         function (error,  rows, field){
             if(error){
@@ -133,7 +136,7 @@ exports.editCategory = function (req, res){
     let name = req.body.name;
 
     connection.query(
-        `UPDATE category SET name=? WHERE id=?`,
+        `UPDATE categories SET name=? WHERE id=?`,
         [name, id],
         function (error, rows, field){
             if(error){
@@ -156,7 +159,7 @@ exports.editNote = function (req, res){
     let categoryId = req.body.category_id;
 
     connection.query(
-        `UPDATE note SET title=?, note=?, time="${date}", category_id=? WHERE id=?`,
+        `UPDATE notes SET title=?, note=?, time="${date}", category_id=? WHERE id=?`,
         [title, note, categoryId, id],
         function (error, rows, field){
             if(error){
@@ -176,7 +179,7 @@ exports.deleteNote = function (req, res){
     let id = req.params.id;
 
     connection.query(
-        `DELETE FROM note WHERE id=?`,
+        `DELETE FROM notes WHERE id=?`,
         [id],
         function (error, rows, field){
             if(error){
@@ -196,7 +199,7 @@ exports.deleteCategory = function (req, res){
     let id = req.params.id;
 
     connection.query(
-        'DELETE FROM category WHERE id=?',
+        'DELETE FROM categories WHERE id=?',
         [id],
         function (error, rows, field){
             if(error){
