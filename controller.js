@@ -2,8 +2,6 @@
 
 const response = require('./response');
 const connection = require('./connect');
-const now = new Date();
-const date = now.getDate() + "/" + now.getMonth() + "/" + now.getFullYear();
 
 exports.showAll = function (req, res) {
     connection.query(
@@ -20,17 +18,24 @@ exports.showAll = function (req, res) {
 
 exports.showNotes = function (req, res){
     let sort = req.query.sort;
+    let sortBy = req.query.sort_by;
     let search = req.query.search;
-    let page = req.query.page;
+    let page = req.query.page || 1;
 
     var query = `SELECT * FROM notes `;
 
     if(search) query = query + `WHERE CONCAT(title,note) LIKE '%${search}%' OR CONCAT(note, title) LIKE '%${search}%' `;
-
-    if(sort) query = query + `ORDER BY id ${sort} `;
+    
+    let by = 'time';                            //if not use ?sort_by=,
+    let order = 'desc';                         //sort by newest time     ==
+    sort ? order = sort : order;                //sort by time desc 
+    sort ? by = 'title' : by;                   //if use ?sort,
+    sortBy ? by = sortBy : by;                  //sort by title according to the
+    
+    query = query + `ORDER BY ${by} ${order} `; //query(asc/desc) entered
 
     let num = page == 1 ? page-1 : (page-1)*10;
-    if(page) query = query + `LIMIT ${num},10 `;
+    query = query + `LIMIT ${num},10 `;
 
     connection.query(
         query,
@@ -38,11 +43,20 @@ exports.showNotes = function (req, res){
             if (error) {
                 throw error;
             } else {
-                response.ok(rows, res);
+                console.log(query);
+                connection.query(`SELECT COUNT(*) AS total FROM notes`, function (err, result, field){
+                    let total = result[0].total;
+                    let totalPage = Math.ceil(total/10);
+                    let page = parseInt(req.query.page) || 1;
+                    let limit = 10;
+
+                    let info = [total,page,totalPage,limit];
+                    response.tes(rows, info, res);
+                });
             }
         }
     );
-}
+};
 
 exports.showCategories = function (req, res) {
     connection.query(
@@ -55,7 +69,7 @@ exports.showCategories = function (req, res) {
             }
         }
     );
-}
+};
 
 exports.showNote = function (req, res) {
     let id = req.params.id;
@@ -159,7 +173,7 @@ exports.editNote = function (req, res){
     let categoryId = req.body.category_id;
 
     connection.query(
-        `UPDATE notes SET title=?, note=?, time="${date}", category_id=? WHERE id=?`,
+        `UPDATE notes SET title=?, note=?, time=current_time(), category_id=? WHERE id=?`,
         [title, note, categoryId, id],
         function (error, rows, field){
             if(error){
