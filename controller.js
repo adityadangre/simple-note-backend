@@ -21,7 +21,7 @@ exports.showNotes = function (req, res){
     let page = req.query.page || 1;
     let limit = req.query.limit || 10;
     
-    var query = `SELECT * FROM notes `;
+    var query = `SELECT notes.id, notes.title, notes.note, notes.time, categories.name AS category FROM notes INNER JOIN categories ON notes.category_id = categories.id `;
 
     if(search) query = query + `WHERE CONCAT(title,note) LIKE '%${search}%' OR CONCAT(note, title) LIKE '%${search}%' `;
     
