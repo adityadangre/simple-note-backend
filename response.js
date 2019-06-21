@@ -10,7 +10,7 @@ exports.ok = function (values, res) {
     res.end();
 };
 
-exports.tes = function (values, values2, res) {
+exports.info = function (values, values2, res) {
     const data = {
         status: 200,
         data: values,

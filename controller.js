@@ -17,25 +17,31 @@ exports.showAll = function (req, res) {
 };
 
 exports.showNotes = function (req, res){
-    let sort = req.query.sort;
-    let sortBy = req.query.sort_by;
-    let search = req.query.search;
+    let {sort, search, sort_by} = req.query;
     let page = req.query.page || 1;
-
+    let limit = req.query.limit || 10;
+    
     var query = `SELECT * FROM notes `;
 
     if(search) query = query + `WHERE CONCAT(title,note) LIKE '%${search}%' OR CONCAT(note, title) LIKE '%${search}%' `;
     
-    let by = 'time';                            //if not use ?sort_by=,
-    let order = 'desc';                         //sort by newest time     ==
-    sort ? order = sort : order;                //sort by time desc 
-    sort ? by = 'title' : by;                   //if use ?sort,
-    sortBy ? by = sortBy : by;                  //sort by title according to the
-    
-    query = query + `ORDER BY ${by} ${order} `; //query(asc/desc) entered
+    let by = 'time';                            
+    let order = 'desc';                         
+    sort ? order = sort : order;                 
+    sort ? by = 'title' : by;                   
+    if(sort_by){
+        by = sort_by;
+        order = 'asc';
+    }else{
+        by = by;
+    }                  
 
-    let num = page == 1 ? page-1 : (page-1)*10;
-    query = query + `LIMIT ${num},10 `;
+    query = query + `ORDER BY ${by} ${order} `; 
+
+    let queryNoLimit = query;
+
+    let num = page == 1 ? page-1 : (page-1)*limit;
+    query = query + `LIMIT ${num},${limit} `;
 
     connection.query(
         query,
@@ -43,15 +49,15 @@ exports.showNotes = function (req, res){
             if (error) {
                 throw error;
             } else {
-                console.log(query);
-                connection.query(`SELECT COUNT(*) AS total FROM notes`, function (err, result, field){
-                    let total = result[0].total;
-                    let totalPage = Math.ceil(total/10);
-                    let page = parseInt(req.query.page) || 1;
-                    let limit = 10;
+                connection.query(queryNoLimit, function (err, row, field){
+                    let total = row.length;
+                    let totalPage = Math.ceil(total/limit);
+                    let currPage = parseInt(page);
+                    let numLimit = parseInt(limit);
 
-                    let info = [total,page,totalPage,limit];
-                    response.tes(rows, info, res);
+                    let info = [total, currPage, totalPage, numLimit];
+                    
+                    response.info(rows, info, res);
                 });
             }
         }
