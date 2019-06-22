@@ -23,3 +23,13 @@ exports.info = function (values, values2, res) {
     res.json(data);
     res.end();
 };
+
+exports.empty = function (values, res) {
+    const data = {
+        status: 200,
+        message: 'data is empty'
+    }
+
+    res.json(data);
+    res.end();
+}

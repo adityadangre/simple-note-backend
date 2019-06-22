@@ -4,7 +4,10 @@ module.exports = function (app) {
     const controller = require('./controller');
 
     // ========== GET ==========
-    app.get('/', controller.showAll);
+    app.get('/', (req, res) => res.send({
+        status: 200,
+        message: 'there is nothing here'
+    }));
     app.get('/notes', controller.showNotes);
     app.get('/notes/:id', controller.showNote);
     app.get('/categories', controller.showCategories);

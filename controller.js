@@ -3,18 +3,18 @@
 const response = require('./response');
 const connection = require('./connect');
 
-exports.showAll = function (req, res) {
-    connection.query(
-        `SELECT * FROM notes, categories`,
-        function (error, rows, field){
-            if(error){
-                throw error;
-            }else{
-                response.ok(rows, res);
-            }
-        }
-    );
-};
+// exports.showAll = function (req, res) {
+//     connection.query(
+//         `SELECT * FROM notes, categories`,
+//         function (error, rows, field){
+//             if(error){
+//                 throw error;
+//             }else{
+//                 response.ok(rows, res);
+//             }
+//         }
+//     );
+// };
 
 exports.showNotes = function (req, res){
     let {sort, search, sort_by} = req.query;
@@ -24,7 +24,7 @@ exports.showNotes = function (req, res){
     var query = `SELECT notes.id, notes.title, notes.note, notes.time, categories.name AS category FROM notes INNER JOIN categories ON notes.category_id = categories.id `;
 
     if(search) query = query + `WHERE CONCAT(title,note) LIKE '%${search}%' OR CONCAT(note, title) LIKE '%${search}%' `;
-    
+
     let by = 'time';                            
     let order = 'desc';                         
     sort ? order = sort : order;                 
@@ -42,6 +42,7 @@ exports.showNotes = function (req, res){
 
     let num = page == 1 ? page-1 : (page-1)*limit;
     query = query + `LIMIT ${num},${limit} `;
+    console.log(query);
 
     connection.query(
         query,
@@ -56,8 +57,8 @@ exports.showNotes = function (req, res){
                     let numLimit = parseInt(limit);
 
                     let info = [total, currPage, totalPage, numLimit];
-                    
-                    response.info(rows, info, res);
+
+                    !rows.length == 0 ? response.info(rows, info, res) : response.empty(rows, res);                    
                 });
             }
         }
@@ -71,7 +72,7 @@ exports.showCategories = function (req, res) {
             if (error) {
                 throw error;
             } else {
-                response.ok(rows, res);
+                !rows.length == 0 ? response.ok(rows, res) : response.empty(rows, res);
             }
         }
     );
@@ -81,13 +82,13 @@ exports.showNote = function (req, res) {
     let id = req.params.id;
 
     connection.query(
-        `SELECT * FROM notes WHERE id=?`,
+        `SELECT notes.id, notes.title, notes.note, notes.time, categories.name AS category FROM notes INNER JOIN categories ON notes.category_id = categories.id  WHERE notes.id=?`,
         [id],
         function (error, rows, field){
             if(error){
                 throw error;
             }else{
-                response.ok(rows, res);
+                !rows.length == 0 ? response.ok(rows, res) : response.empty(rows, res);
             }
         }
     );
@@ -103,7 +104,7 @@ exports.showCategory = function (req, res) {
             if(error){
                 throw error;
             }else{
-                response.ok(rows, res);
+                !rows.length == 0 ? response.ok(rows, res) : response.empty(rows, res);
             }
         }
     );
@@ -135,7 +136,7 @@ exports.addNote = function (req, res) {
     let categoryId = req.body.category_id;
     
     connection.query(
-        `INSERT INTO notes SET title=?, note=?, time="${date}", category_id=?`,
+        `INSERT INTO notes SET title=?, note=?, time=current_time(), category_id=?`,
         [title, note, categoryId],
         function (error,  rows, field){
             if(error){
