@@ -1,26 +1,29 @@
-# Simple RESTful Note App
-Use NodeJS and Express
+# Simple Note - Backend
 
-- body-parser : v1.19.0
-- dotenv      : v8.0.0
-- express     : v4.17.1
-- mysql       : v2.17.1
-- nodejs      : v10.16.0
-- nodemon     : v1.19.1
-- npm         : v6.9.0
+This is a backend project for the simple note app.
 
-### How to Run :
+## Getting Started
 
-**1.** install npm\
-**2.** install nodejs\
-**3.** pull my project to your directory\
-**4.** create the database, import noteapp.sql\
-**5.** create file '.env' fill this with database and port configuration\
-**6.** set configuration database and port in server.js and connect.js or in file .env
+### Dependencies
 
-```sh
-$ npm install --save express mysql body-parser nodemon dotenv
-$ npm start
+* [body-parser](https://www.npmjs.com/package/body-parser): 1.19.0
+* [dotenv](https://www.npmjs.com/package/dotenv): 8.0.0
+* [expressjs](https://expressjs.com/): 4.17.1
+* [mysql](https://www.mysql.com/): 2.17.1
+* [nodejs](https://nodejs.org/): 10.16.0 
+
+### Installing
+
+* Clone or download this project 
+* Open terminal or command line
+* Change direktory to this project folder
+* Install the dependencies
+
+### Executing program
+
+* Make sure the dependencies are installed
+* and run the command below
 ```
-
-*note: this project was made to fulfill the task week of the Arkademy*
+npm install
+npm start
+```

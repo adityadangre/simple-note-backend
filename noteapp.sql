@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2019 at 06:32 AM
+-- Generation Time: Jul 07, 2019 at 06:25 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -30,19 +30,23 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL
+  `name` varchar(20) NOT NULL,
+  `icon` varchar(30) NOT NULL,
+  `color` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`) VALUES
-(4, 'Works'),
-(5, 'Books'),
-(6, 'Movies'),
-(7, 'Links'),
-(8, 'To-do');
+INSERT INTO `categories` (`id`, `name`, `icon`, `color`) VALUES
+(0, 'Works', 'build', '#2FC2DF'),
+(1, 'Books', 'book', '#FAD06C'),
+(2, 'Movies', 'videocam', '#C0EB6A'),
+(3, 'Links', 'link', '#b4b5b4'),
+(24, 'To-do', 'walk', '#FF92A9'),
+(29, 'Personal', 'person', ''),
+(30, 'Learn', 'book', '');
 
 -- --------------------------------------------------------
 
@@ -54,7 +58,7 @@ CREATE TABLE `notes` (
   `id` int(11) NOT NULL,
   `title` varchar(50) NOT NULL,
   `note` varchar(100) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `time` varchar(20) NOT NULL,
   `category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -63,20 +67,24 @@ CREATE TABLE `notes` (
 --
 
 INSERT INTO `notes` (`id`, `title`, `note`, `time`, `category_id`) VALUES
-(4, 'Everything is Fucked', 'A Book About Hope', '2019-06-19 17:00:00', 5),
-(5, 'The Subtle Art of Not Giving a Fuck', 'A Counterintuitive Approach to Living a Good Life', '2019-06-19 17:00:00', 5),
-(6, 'Forrest Gump', '1994 American comedy-drama film based on the 1986 novel of the same name by Winston Groom', '2019-06-19 17:00:00', 6),
-(7, 'Pay It Forward', '2000 American romantic drama film directed by Mimi Leder', '2019-06-19 17:00:00', 6),
-(8, 'Practice Programming', 'codewars.com', '2019-06-20 00:28:19', 7),
-(9, 'Practice Programming', 'hackerrank.com', '2019-06-20 00:28:19', 7),
-(10, 'Practice Programming', 'codility.com', '2019-06-20 00:28:58', 7),
-(11, 'Practice Programming', 'test4geek.com', '2019-06-20 00:28:58', 7),
-(12, 'Job Vacancy', 'glassdoor.com', '2019-06-20 00:31:50', 7),
-(13, 'Job Vacancy', 'jobstreet.com', '2019-06-20 00:31:50', 7),
-(14, 'Job Vacancy', 'kalibrr.id', '2019-06-20 00:33:05', 7),
-(15, 'Donor Darah', 'Jam 10am, di PMI Kota Bandung', '2019-06-20 00:33:05', 8),
-(16, 'Merapikan Dokumen', 'Jam 1pm', '2019-06-20 00:35:12', 8),
-(17, 'Baca Buku', 'Apasaja, Jam 3pm', '2019-06-20 00:35:12', 8);
+(4, 'Everything is F*cked', 'A Book About Hope', '2019-06-20', 1),
+(5, 'The Subtle Art of Not Giving a F*ck', 'A Counterintuitive Approach to Living a Good Life', '2019-06-20', 1),
+(6, 'Forrest Gump', '1994 American comedy-drama film based on the 1986 novel of the same name by Winston Groom', '2019-06-20', 2),
+(7, 'Pay It Forward', '2000 American romantic drama film directed by Mimi Leder', '2019-06-20', 2),
+(8, 'Practice Programming', 'codewars.com', '2019-06-20', 3),
+(9, 'Practice Programming', 'hackerrank.com', '2019-06-20', 3),
+(10, 'Practice Programming', 'codility.com', '2019-06-20', 3),
+(11, 'Practice Programming', 'test4geek.com', '2019-06-20', 3),
+(12, 'Job Vacancy', 'glassdoor.com', '2019-06-20', 3),
+(13, 'Job Vacancy\'s', 'jobstreet.com', '2019-06-20', 3),
+(14, 'Job Vacancy', 'kalibrr.id', '2019-06-20', 3),
+(15, 'Donor Darah', 'Jam 10am, di PMI Kota Bandung', '2019-06-20', 4),
+(16, 'Merapikan Dokumen', 'Jam 1pm', '2019-06-20', 4),
+(17, 'Baca Buku', 'Apasaja, Jam 3pm', '2019-06-20', 4),
+(30, 'Sunday Morning', 'UGM, 9am', '2019-07-06', 24),
+(31, 'Jogging', 'Sunday, 5am - 7am\nHome to Malioboro', '2019-07-06', 24),
+(33, 'Panjang', 'It was the only one of my resume and a good day to you soon love you so very sorry to bother to you ', '2019-07-06', 24),
+(38, 'Infinite Scrolls', 'So the scrolling no worries and I\'ll see what happens to me as well so that the github the github', '2019-07-06', 0);
 
 --
 -- Indexes for dumped tables
@@ -103,13 +111,13 @@ ALTER TABLE `notes`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `notes`
 --
 ALTER TABLE `notes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
