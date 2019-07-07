@@ -17,26 +17,19 @@ const connection = require('./connect');
 // };
 
 exports.showNotes = function (req, res){
-    let {sort, search, sort_by} = req.query;
+    let {sort, search, search_by} = req.query;
     let page = req.query.page || 1;
     let limit = req.query.limit || 10;
     
-    var query = `SELECT notes.id, notes.title, notes.note, notes.time, categories.name AS category FROM notes INNER JOIN categories ON notes.category_id = categories.id `;
+    var query = `SELECT notes.id, notes.title, notes.note, notes.time, categories.name AS category FROM notes LEFT JOIN categories ON notes.category_id = categories.id `;
 
-    if(search) query = query + `WHERE CONCAT(title,note) LIKE '%${search}%' OR CONCAT(note, title) LIKE '%${search}%' `;
+    search_by = search_by || 'CONCAT(title,note)';
+    if (search) query = query + `WHERE ${search_by} LIKE '%${search}%' OR ${search_by} LIKE '%${search}%' `;
 
-    let by = 'time';                            
-    let order = 'desc';                         
-    sort ? order = sort : order;                 
-    sort ? by = 'title' : by;                   
-    if(sort_by){
-        by = sort_by;
-        order = 'asc';
-    }else{
-        by = by;
-    }                  
+    let order = 'desc';                
+    sort ? order = sort : order;             
 
-    query = query + `ORDER BY ${by} ${order} `; 
+    query = query + `ORDER BY time ${order} `; 
 
     let queryNoLimit = query;
 
@@ -112,10 +105,12 @@ exports.showCategory = function (req, res) {
 
 exports.addCategory = function (req, res) {
     let name = req.body.name;
+    let icon = req.body.icon;
+    let color = req.body.color;
 
     connection.query(
-        `INSERT INTO categories SET name=?`,
-        [name],
+        `INSERT INTO categories SET name=?, icon=?, color=?`,
+        [name, icon, color],
         function (error, rows, field){
             if(error){
                 throw error;
@@ -136,7 +131,7 @@ exports.addNote = function (req, res) {
     let categoryId = req.body.category_id;
     
     connection.query(
-        `INSERT INTO notes SET title=?, note=?, time=current_time(), category_id=?`,
+        `INSERT INTO notes SET title=?, note=?, time=CURRENT_DATE, category_id=?`,
         [title, note, categoryId],
         function (error,  rows, field){
             if(error){
@@ -180,7 +175,7 @@ exports.editNote = function (req, res){
     let categoryId = req.body.category_id;
 
     connection.query(
-        `UPDATE notes SET title=?, note=?, time=current_time(), category_id=? WHERE id=?`,
+        `UPDATE notes SET title=?, note=?, category_id=? WHERE id=?`,
         [title, note, categoryId, id],
         function (error, rows, field){
             if(error){
