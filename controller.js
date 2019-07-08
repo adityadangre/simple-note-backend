@@ -21,7 +21,7 @@ exports.showNotes = function (req, res){
     let page = req.query.page || 1;
     let limit = req.query.limit || 10;
     
-    var query = `SELECT notes.id, notes.title, notes.note, notes.time, categories.name AS category FROM notes LEFT JOIN categories ON notes.category_id = categories.id `;
+    var query = `SELECT notes.id, notes.title, notes.note, notes.time, categories.name AS category, categories.id AS category_id FROM notes LEFT JOIN categories ON notes.category_id = categories.id `;
 
     search_by = search_by || 'CONCAT(title,note)';
     if (search) query = query + `WHERE ${search_by} LIKE '%${search}%' OR ${search_by} LIKE '%${search}%' `;
