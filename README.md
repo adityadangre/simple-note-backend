@@ -5,7 +5,7 @@ This is a backend project for the [simple note app](https://github.com/fdlnfjrrm
 ### Related Projects
 
 * [Fullstack](https://github.com/fdlnfjrrmdni/simple-note-fullstack)
-* [Frontend](https://github.com/fdlnfjrrmdni/simple-note-backend)
+* [Frontend](https://github.com/fdlnfjrrmdni/simple-note-frontend)
 
 ### Usage
 
