@@ -1,8 +1,13 @@
 # Simple Note - Backend
 
-This is a backend project for the simple note app.
+This is a backend project for the [simple note app](https://github.com/fdlnfjrrmdni/simple-note-fullstack). if you want to see the finished project click [this](https://github.com/fdlnfjrrmdni/simple-note-fullstack)
 
-## Usage
+### Related Projects
+
+* [Fullstack](https://github.com/fdlnfjrrmdni/simple-note-fullstack)
+* [Frontend](https://github.com/fdlnfjrrmdni/simple-note-backend)
+
+### Usage
 
 - Clone or download this repo first
 - Open your terminal or cmd and type `npm install`
